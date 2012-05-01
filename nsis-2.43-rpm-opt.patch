@@ -1,0 +1,28 @@
+diff -ur nsis-2.43-src-64bit-fixes/SCons/Config/gnu nsis-2.43-src-rpm-opt/SCons/Config/gnu
+--- nsis-2.43-src-64bit-fixes/SCons/Config/gnu	2009-02-25 08:33:39.000000000 +0100
++++ nsis-2.43-src-rpm-opt/SCons/Config/gnu	2009-03-03 22:24:49.000000000 +0100
+@@ -1,5 +1,7 @@
+ print "Using GNU tools configuration"
+ 
++import os
++
+ Import('defenv')
+ 
+ ### imports
+@@ -89,7 +91,7 @@
+ makensis_env.Append(CPPPATH = ['#$BUILD_CONFIG'])
+ 
+ if not defenv['DEBUG']:
+-	makensis_env.Append(CCFLAGS = ['-O2'])                  # optimize
++	makensis_env.Append(CCFLAGS = os.getenv('RPM_OPT_FLAGS'))                  # optimize
+ makensis_env.Append(CFLAGS = ['-Wall'])                   # all warnings
+ makensis_env.Append(CXXFLAGS = ['-Wno-non-virtual-dtor']) # ignore virtual dtor warnings
+ makensis_env.Append(CXXFLAGS = ['-Wall'])                 # all warnings
+@@ -146,6 +148,7 @@
+ 
+ ### cross-platform util environment adjustments
+ 
++cp_util_env.Append(CCFLAGS = os.getenv('RPM_OPT_FLAGS'))
+ conf = FlagsConfigure(cp_util_env)
+ if not defenv['DEBUG'] and defenv['STRIP'] and defenv['STRIP_CP']:
+ 	TestStrip(conf)                                 # strip
